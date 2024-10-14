@@ -4,11 +4,13 @@ import morgan from 'morgan'; // Middleware para registro de solicitudes HTTP
 import bodyParser from 'body-parser'; // Middleware para analizar cuerpos de las solicitudes
 import cors from 'cors'; 
 import authController from './controllers/authControllers.js'; 
+const port = process.env.PORT || 4000;
+
 
 
 const app = express();
 const corsOptions = {
-    origin: '*', 
+    origin: '192.168.5.0', 
     optionsSuccessStatus: 204 
 };
 
