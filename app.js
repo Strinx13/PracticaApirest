@@ -7,22 +7,22 @@ import authController from './controllers/authControllers.js';
 
 const app = express();
 
-// Definir las IPs o dominios permitidos
-const allowedOrigins = ['35.160.120.126'];
 
 // Configurar las opciones de CORS
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true);  // Permitir si el origen está en la lista
-        } else {
-          callback(new Error('Acceso no permitido por CORS'));  // Bloquear si no está en la lista
-        }
-      },
-  optionsSuccessStatus: 204 // Estado para respuestas pre-flight (OPCIONAL)
+  origin: function (origin, callback) {
+      // Aquí defines la lista de orígenes permitidos
+      const allowedOrigins = ['http://35.160.120.126']; 
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+      } else {
+          callback(new Error('No autorizado por CORS'));
+      }
+  }
 };
 
-app.use(cors(corsOptions));  // Aplicar el middleware de CORS con las opciones
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
