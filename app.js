@@ -1,28 +1,37 @@
 import express from 'express';
-import userController from './controllers/userController.js'; // Cambiado a userController
-import morgan from 'morgan'; // Middleware para registro de solicitudes HTTP
-import bodyParser from 'body-parser'; // Middleware para analizar cuerpos de las solicitudes
+import userController from './controllers/userController.js';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import cors from 'cors'; 
-import authController from './controllers/authControllers.js'; 
-const port = process.env.PORT || 4000;
-
-
+import authController from './controllers/authControllers.js';
 
 const app = express();
+
+// Definir las IPs o dominios permitidos
+const allowedOrigins = ['http://192.168.5.0'];
+
+// Configurar las opciones de CORS
 const corsOptions = {
-    origin: '192.168.5.0', 
-    optionsSuccessStatus: 204 
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);  // Permitir si el origen está en la lista
+        } else {
+          callback(new Error('Acceso no permitido por CORS'));  // Bloquear si no está en la lista
+        }
+      },
+  optionsSuccessStatus: 204 // Estado para respuestas pre-flight (OPCIONAL)
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions));  // Aplicar el middleware de CORS con las opciones
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/api/auth', authController);  // Cambiado a /api/authnp
-app.use(express.json());
-app.use('/api', userController); // Usando el controlador de usuarios
+
+app.use('/api/auth', authController);
+app.use('/api', userController);
 
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
