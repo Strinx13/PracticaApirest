@@ -27,17 +27,10 @@ const swaggerOptions = {
 };
 
 // Definir las IPs o dominios permitidos
-const allowedOrigins = ['35.160.120.126'];
 
 // Configurar las opciones de CORS
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true);  // Permitir si el origen está en la lista
-        } else {
-          callback(new Error('Acceso no permitido por CORS'));  // Bloquear si no está en la lista
-        }
-      },
+    origin:'*',
   optionsSuccessStatus: 204 // Estado para respuestas pre-flight (OPCIONAL)
 };
 
