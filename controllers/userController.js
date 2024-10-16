@@ -5,6 +5,31 @@ import User from "../models/userModel.js"; // Cambiado a userModel
 
 const router = express.Router();
 
+
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     summary: Retorna una lista de todos los usuarios
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Una lista de usuarios.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     example: "Juan Perez"
+ */
+
 // Obtener todos los usuarios
 router.get("/users", async (req, res) => {
     try {
@@ -14,6 +39,40 @@ router.get("/users", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Crea un nuevo usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Ana García"
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: "Ana García"
+ *       400:
+ *         description: Error en la solicitud
+ */
 
 // Agregar un nuevo usuario
 router.post("/users",
@@ -39,6 +98,50 @@ router.post("/users",
     }
 );
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Actualiza un usuario existente
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Carlos Torres"
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: "Carlos Torres"
+ *       400:
+ *         description: Error en la solicitud
+ *       404:
+ *         description: Usuario no encontrado
+ */
+
+
 // Actualizar un usuario
 router.put("/users/:id", async (req, res) => {
     try {
@@ -48,6 +151,27 @@ router.put("/users/:id", async (req, res) => {
         res.status(404).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Elimina un usuario existente por ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado exitosamente.
+ *       404:
+ *         description: Usuario no encontrado
+ */
+
 
 // Eliminar un usuario
 router.delete('/users/:id', async (req, res) => {

@@ -4,6 +4,59 @@ import authService from '../services/authServices.js';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Registra un nuevo usuario
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "usuario123"
+ *               password:
+ *                 type: string
+ *                 example: "contraseña123"
+ *     responses:
+ *       201:
+ *         description: Usuario registrado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 username:
+ *                   type: string
+ *                   example: "usuario123"
+ *       400:
+ *         description: Error de validación de los datos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       msg:
+ *                         type: string
+ *                         example: "El nombre de usuario es requerido"
+ *       500:
+ *         description: Error interno del servidor.
+ */
+
+
 router.post('/register', [
     check('username').not().isEmpty().withMessage('El nombre de usuario es requerido'),
     check('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
@@ -21,6 +74,51 @@ router.post('/register', [
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Inicia sesión un usuario existente
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "usuario123"
+ *               password:
+ *                 type: string
+ *                 example: "contraseña123"
+ *     responses:
+ *       200:
+ *         description: Usuario autenticado exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       400:
+ *         description: Error en el nombre de usuario o la contraseña.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "El nombre de usuario y la contraseña son requeridos"
+ *       500:
+ *         description: Error interno del servidor.
+ */
+
 
 router.post('/login', async (req, res) => {
     try {
