@@ -5,8 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors'; 
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import userController from './controllers/userController.js'; // Tus controladores
-
+import authController from './controllers/authControllers.js'
 const app = express();
 
 // Configuración de Swagger
