@@ -6,6 +6,12 @@ import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import authController from './controllers/authControllers.js'
+import dotenv from 'dotenv'; // Importa dotenv
+dotenv.config(); // Carga las variables de entorno
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(','); // Divide las URLs por comas
+const token = process.env.TOKEN; // Obtiene el token de las variables de entorno
+
+
 const app = express();
 
 // Configuración de Swagger
@@ -30,8 +36,16 @@ const swaggerOptions = {
 
 // Configurar las opciones de CORS
 const corsOptions = {
-    origin:'*',
-  optionsSuccessStatus: 204 // Estado para respuestas pre-flight (OPCIONAL)
+  origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+      } else {
+          callback(new Error('Acceso denegado por CORS'));
+      }
+  },
+  optionsSuccessStatus: 204
 };
 
 
@@ -45,9 +59,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/auth', authController);
 app.use('/api', userController);
+// Ejemplo de uso del token en una ruta
+app.get('/api/token', (req, res) => {
+    res.json({ token });
+});
 
 
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
 
-const port = process.env.PORT || 3001; // Usa el puerto del .env o 3000 por defecto
-
-console.log(`Puerto: ${port}`);
