@@ -1,0 +1,18 @@
+
+agregar user
+{
+    "nombre": "Juan Pérez",
+    "correo_electronico": "juan.perez@example.com",
+    "carrera": "Ingeniería Informática"
+}
+
+actualizar put
+{
+    "nombre": "Juan Pérez Modificado",
+    "correo_electronico": "juan.modificado@example.com",
+    "carrera": "Ingeniería de Software"
+}
+
+
+
+

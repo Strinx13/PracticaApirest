@@ -46,8 +46,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', authController);
 app.use('/api', userController);
 
-const PORT = 3001;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
 
+
+const port = process.env.PORT || 3001; // Usa el puerto del .env o 3000 por defecto
+
+console.log(`Puerto: ${port}`);
