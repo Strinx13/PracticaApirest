@@ -33,20 +33,12 @@ const swaggerOptions = {
 };
 
 // Definir las IPs o dominios permitidos
-
-// Configurar las opciones de CORS
+// Configurar las opciones de CORS para permitir todas las IPs
 const corsOptions = {
-  origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.includes(origin)) {
-          callback(null, true);
-      } else {
-          callback(new Error('Acceso denegado por CORS'));
-      }
-  },
+  origin: true, // Permitir todas las direcciones IP
   optionsSuccessStatus: 204
 };
+
 
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
